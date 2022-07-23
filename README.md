@@ -1,1 +1,1 @@
-# sorting_algorithms
+#My sorting algorithm project
