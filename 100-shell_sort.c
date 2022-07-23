@@ -1,52 +1,41 @@
 #include "sort.h"
 
 /**
- * shell_sort - function that sorts an array of integers in ascending,
- * order using the Shell sort algorithm, using the Knuth sequence.
- *
- * Use the sequence n+1 = n * 3 + 1
- * 1, 4, 13, 40, 121, ...
- *
- * @array: pointer to array to sort.
- * @size: size of array.
- *
- * Return: No return.
- *
+*swap - the positions of two elements into an array
+*@array: array
+*@item1: array element
+*@item2: array element
+*/
+void swap(int *array, int item1, int item2)
+{
+
+	int tmp;
+
+	tmp = array[item1];
+	array[item1] = array[item2];
+	array[item2] = tmp;
+}
+/**
+ * shell_sort - function that sorts an array of integers in ascending
+ * order using the Shell sort algorithm, using the Knuth sequence
+ * @size: size of the array
+ * @array: list with numbers
  */
 void shell_sort(int *array, size_t size)
 {
-	size_t inner, outer;
-	int temp_val;
-	size_t gap = 1;
-	size_t i = 0;
+	size_t gap = 1, i, index = 0;
 
 	if (array == NULL || size < 2)
 		return;
-
-	/* calculate gap interval */
 	while (gap < size / 3)
-		gap = gap * 3 + 1;
-
-	while (gap > 0)
+		gap = 3 * gap + 1;
+	while (gap >= 1)
 	{
-		for (outer = gap; outer < size; outer++)
-		{
-			/* select the value to be inserted */
-			temp_val = array[outer];
-			inner = outer;
-
-			/* shift value to right */
-			while (inner > gap - 1 && array[inner - gap] >= temp_val)
-			{
-				array[inner] = array[inner - gap];
-				inner -= gap;
-			}
-			/* insert element at this position */
-			array[inner] = temp_val;
-		}
+		for (i = gap; i < size; i++)
+			for (index = i; index >= gap &&
+			 (array[index] < array[index - gap]); index -= gap)
+				swap(array, index, index - gap);
 		print_array(array, size);
-		/* calculate interval */
-		gap = (gap - 1) / 3;
-		i++;
+		gap /= 3;
 	}
 }
